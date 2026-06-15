@@ -17,8 +17,11 @@ def create_app():
     app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), "uploads")
     app.config["QA_ENGINE"] = QAEngine(upload_dir=app.config["UPLOAD_FOLDER"])
 
-    allowed_origin = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
-    CORS(app, resources={r"/*": {"origins": allowed_origin}})
+    allowed_origins = os.getenv(
+        "FRONTEND_ORIGIN",
+        "http://localhost:5173,http://127.0.0.1:5173,http://192.168.1.2:5173",
+    ).split(",")
+    CORS(app, resources={r"/*": {"origins": [origin.strip() for origin in allowed_origins]}})
 
     app.register_blueprint(upload_bp)
     app.register_blueprint(chat_bp)

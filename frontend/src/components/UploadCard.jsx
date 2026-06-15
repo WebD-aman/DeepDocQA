@@ -22,8 +22,8 @@ export default function UploadCard({ currentDocument, onUpload, loading }) {
   return (
     <section className="panel upload-panel">
       <div className="section-heading">
-        <p className="eyebrow">Document Upload</p>
-        <h2>One active source at a time</h2>
+        <p className="eyebrow">Source</p>
+        <h2>Upload a document</h2>
       </div>
 
       <div
@@ -47,9 +47,11 @@ export default function UploadCard({ currentDocument, onUpload, loading }) {
           onChange={(event) => chooseFile(event.target.files[0])}
           hidden
         />
-        <div className="upload-icon">DOC</div>
+        <div className="upload-icon" aria-hidden="true">
+          <span />
+        </div>
         <strong>Drop a PDF, TXT, or DOCX file here</strong>
-        <span>or click to browse from your laptop</span>
+        <span>or click to browse files</span>
       </div>
 
       <div className="file-meta">
@@ -58,10 +60,10 @@ export default function UploadCard({ currentDocument, onUpload, loading }) {
       </div>
 
       <button className="primary-button" onClick={submit} disabled={!selectedFile || loading}>
-        Upload and Process
+        Process Document
       </button>
 
-      {loading && <Loader label="Reading and embedding document" />}
+      {loading && <Loader label="Preparing document" />}
     </section>
   );
 }

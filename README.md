@@ -18,16 +18,17 @@ Upload a PDF, DOCX, or TXT file and ask questions about its content. The chatbot
 
 ```text
 document-qa-chatbot/
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│   ├── models/
-│   └── uploads/
-├── frontend/
-│   ├── src/
-│   ├── package.json
-│   └── vite.config.js
-└── README.md
+|-- backend/
+|   |-- app.py
+|   |-- requirements.txt
+|   |-- models/
+|   `-- uploads/
+|-- frontend/
+|   |-- src/
+|   |-- package.json
+|   `-- vite.config.js
+|-- render.yaml
+`-- README.md
 ```
 
 ## Setup
@@ -71,6 +72,32 @@ python train.py
 ```
 
 After training, restart the Flask server.
+
+The trained files are written to `backend/models/saved_model/`. Commit these files only if you want Render to use the trained model. If they are not present, the app still runs in fallback mode.
+
+## Deploy Backend on Render
+
+This repo includes `render.yaml`, so the easiest path is to push the repo to GitHub and create a Render Blueprint from it.
+
+Render settings for a manual Web Service:
+
+```text
+Root Directory: backend
+Runtime: Python
+Build Command: pip install -r requirements.txt
+Start Command: gunicorn app:app
+Health Check Path: /
+```
+
+Environment variables:
+
+```text
+PYTHON_VERSION=3.11.9
+MAX_UPLOAD_MB=10
+FRONTEND_ORIGIN=https://your-frontend-domain.example
+```
+
+Do not commit local virtual environments such as `venv/` or `.venv/`; they are already ignored by `.gitignore`. Render installs dependencies from `backend/requirements.txt`.
 
 ## API Endpoints
 
